@@ -105,7 +105,10 @@ public class IncidenciasDao {
     public void actualizarIncidencia(Integer idIncidencia, IncidenciaRequestDto incidenciaRequestDto, MultipartFile image) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
         try {
-            String imageUrl = cloudinaryUtil.actualizarImagenEnLaNube(image, idIncidencia);
+            String imageUrl = null;
+            if (image != null) {
+                 imageUrl = cloudinaryUtil.actualizarImagenEnLaNube(image, idIncidencia);
+            }
 
             simpleJdbcCall.withProcedureName("ActualizarIncidencia")
                     .declareParameters(

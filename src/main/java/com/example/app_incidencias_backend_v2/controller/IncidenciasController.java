@@ -39,7 +39,7 @@ public class IncidenciasController {
     private ResponseEntity<?> actualizarIncidencia(
             @PathVariable("id") Integer idIncidencia,
             @RequestParam("incidencia") String incidencia,
-            @RequestParam("imagen") MultipartFile imagen
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen
     ) {
         incidenciasService.actualizarIncidencia(idIncidencia, incidencia, imagen);
         return new ResponseEntity<>(HttpStatus.OK);
