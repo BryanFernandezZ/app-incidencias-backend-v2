@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/login").permitAll()
-                .antMatchers("/api/v1/incidencias/**").hasAuthority("ROLE_COMUN")
+                .antMatchers("/api/v1/incidencias/**").hasAnyAuthority("ROLE_COMUN", "ROLE_ADMIN")
                 .antMatchers("/api/v1/clientes/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest()
                 .authenticated()

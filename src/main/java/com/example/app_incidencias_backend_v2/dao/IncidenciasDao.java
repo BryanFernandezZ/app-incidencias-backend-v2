@@ -1,7 +1,7 @@
 package com.example.app_incidencias_backend_v2.dao;
 
+import com.example.app_incidencias_backend_v2.dto.request.ActualizarEstadoIncidenciaRequestDto;
 import com.example.app_incidencias_backend_v2.dto.request.IncidenciaRequestDto;
-import com.example.app_incidencias_backend_v2.dto.response.IncidenciaResponseDto;
 import com.example.app_incidencias_backend_v2.util.CloudinaryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,6 +147,62 @@ public class IncidenciasDao {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("_id_incidencia", idIncidencia);
             parameters.put("_imagen", imageUrl);
+
+            Map<String, Object> response = simpleJdbcCall.execute(parameters);
+            logger.debug(response.toString());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    public List<Object> listarIncidencias() {
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
+        try {
+            simpleJdbcCall.withProcedureName("ListarIncidencias")
+                    .withoutProcedureColumnMetaDataAccess();
+
+            Map<String, Object> response = simpleJdbcCall.execute();
+            logger.debug(response.get("#result-set-1").toString());
+            return (List<Object>) response.get("#result-set-1");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    public Object obtenerDetalleIncidenciaAtencion(Integer idIncidencia) {
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
+        try {
+            simpleJdbcCall.withProcedureName("ObtenerDetalleIncidenciaAtencion")
+                    .declareParameters(new SqlParameter("_id_incidencia", Types.INTEGER));
+
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("_id_incidencia", idIncidencia);
+
+            Map<String, Object> response = simpleJdbcCall.execute(parameters);
+            logger.debug(response.get("#result-set-1").toString());
+            List<Object> recordSet = (List<Object>) response.get("#result-set-1");
+            if (!recordSet.isEmpty()) {
+                return recordSet.get(0);
+            } else throw new RuntimeException("No existe una incidencia con el id " + idIncidencia);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        }
+    }
+
+    public void actualizarEstadoIncidencia(ActualizarEstadoIncidenciaRequestDto actualizarEstadoIncidenciaDto) {
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
+        try {
+            simpleJdbcCall.withProcedureName("ActualizarEstadoIncidencia")
+                    .declareParameters(
+                            new SqlParameter("_id_incidencia", Types.INTEGER),
+                            new SqlParameter("_id_estado", Types.VARCHAR)
+                    );
+
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("_id_incidencia", actualizarEstadoIncidenciaDto.getIdIncidencia());
+            parameters.put("_id_estado", actualizarEstadoIncidenciaDto.getIdEstado());
 
             Map<String, Object> response = simpleJdbcCall.execute(parameters);
             logger.debug(response.toString());

@@ -1,6 +1,7 @@
 package com.example.app_incidencias_backend_v2.service;
 
 import com.example.app_incidencias_backend_v2.dao.IncidenciasDao;
+import com.example.app_incidencias_backend_v2.dto.request.ActualizarEstadoIncidenciaRequestDto;
 import com.example.app_incidencias_backend_v2.dto.request.IncidenciaRequestDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,5 +47,17 @@ public class IncidenciasService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Object> listarIncidencias() {
+        return incidenciasDao.listarIncidencias();
+    }
+
+    public Object obtenerDetalleIncidenciaAtencion(Integer idIncidencia) {
+        return incidenciasDao.obtenerDetalleIncidenciaAtencion(idIncidencia);
+    }
+
+    public void actualizarEstadoIncidencia(ActualizarEstadoIncidenciaRequestDto actualizarEstadoIncidenciaDto) {
+        incidenciasDao.actualizarEstadoIncidencia(actualizarEstadoIncidenciaDto);
     }
 }
