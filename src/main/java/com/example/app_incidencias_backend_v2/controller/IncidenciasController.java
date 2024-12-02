@@ -1,6 +1,7 @@
 package com.example.app_incidencias_backend_v2.controller;
 
 import com.example.app_incidencias_backend_v2.dto.request.ActualizarEstadoIncidenciaRequestDto;
+import com.example.app_incidencias_backend_v2.dto.request.AsignarTecnicoIncidenciaRequestDto;
 import com.example.app_incidencias_backend_v2.service.IncidenciasService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +60,17 @@ public class IncidenciasController {
     @RequestMapping(path = "/atencion/actualizar-estado")
     private ResponseEntity<?> actualizarEstadoIncidencia(@RequestBody ActualizarEstadoIncidenciaRequestDto actualizarEstadoIncidenciaDto) {
         incidenciasService.actualizarEstadoIncidencia(actualizarEstadoIncidenciaDto);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/tecnicos", method = RequestMethod.GET)
+    private ResponseEntity<?> listarTecnicosDisponibilidad() {
+        return ResponseEntity.ok(incidenciasService.listarTecnicosDisponibilidad());
+    }
+
+    @RequestMapping(path = "/tecnicos/asignar", method = RequestMethod.POST)
+    private ResponseEntity<?> asignarTecnicoIncidencia(@RequestBody AsignarTecnicoIncidenciaRequestDto asignarTecnicoIncidenciaRequestDto) {
+        incidenciasService.asignarTecnicoIncidencia(asignarTecnicoIncidenciaRequestDto);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

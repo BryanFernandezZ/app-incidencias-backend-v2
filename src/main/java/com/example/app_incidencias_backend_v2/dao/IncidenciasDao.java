@@ -1,6 +1,7 @@
 package com.example.app_incidencias_backend_v2.dao;
 
 import com.example.app_incidencias_backend_v2.dto.request.ActualizarEstadoIncidenciaRequestDto;
+import com.example.app_incidencias_backend_v2.dto.request.AsignarTecnicoIncidenciaRequestDto;
 import com.example.app_incidencias_backend_v2.dto.request.IncidenciaRequestDto;
 import com.example.app_incidencias_backend_v2.util.CloudinaryUtil;
 import org.slf4j.Logger;
@@ -203,6 +204,41 @@ public class IncidenciasDao {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("_id_incidencia", actualizarEstadoIncidenciaDto.getIdIncidencia());
             parameters.put("_id_estado", actualizarEstadoIncidenciaDto.getIdEstado());
+
+            Map<String, Object> response = simpleJdbcCall.execute(parameters);
+            logger.debug(response.toString());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    public List<Object> listarTecnicosDisponibilidad() {
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
+        try {
+            simpleJdbcCall.withProcedureName("ListarTecnicosDisponibilidad")
+                    .withoutProcedureColumnMetaDataAccess();
+
+            Map<String, Object> response = simpleJdbcCall.execute();
+            logger.debug(response.get("#result-set-1").toString());
+            return (List<Object>) response.get("#result-set-1");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    public void asignarTecnicoIncidencia(AsignarTecnicoIncidenciaRequestDto asignarTecnicoIncidenciaRequestDto) {
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
+        try {
+            simpleJdbcCall.withProcedureName("AsignarTecnicoIncidencia")
+                    .declareParameters(
+                            new SqlParameter("_id_incidencia", Types.INTEGER),
+                            new SqlParameter("_id_tecnico", Types.VARCHAR)
+                    );
+
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("_id_incidencia", asignarTecnicoIncidenciaRequestDto.getIdIncidencia());
+            parameters.put("_id_tecnico", asignarTecnicoIncidenciaRequestDto.getIdTecnico());
 
             Map<String, Object> response = simpleJdbcCall.execute(parameters);
             logger.debug(response.toString());

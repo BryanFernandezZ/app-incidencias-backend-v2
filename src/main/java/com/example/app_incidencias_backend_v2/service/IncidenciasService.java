@@ -2,6 +2,7 @@ package com.example.app_incidencias_backend_v2.service;
 
 import com.example.app_incidencias_backend_v2.dao.IncidenciasDao;
 import com.example.app_incidencias_backend_v2.dto.request.ActualizarEstadoIncidenciaRequestDto;
+import com.example.app_incidencias_backend_v2.dto.request.AsignarTecnicoIncidenciaRequestDto;
 import com.example.app_incidencias_backend_v2.dto.request.IncidenciaRequestDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,5 +60,13 @@ public class IncidenciasService {
 
     public void actualizarEstadoIncidencia(ActualizarEstadoIncidenciaRequestDto actualizarEstadoIncidenciaDto) {
         incidenciasDao.actualizarEstadoIncidencia(actualizarEstadoIncidenciaDto);
+    }
+
+    public List<Object> listarTecnicosDisponibilidad() {
+        return incidenciasDao.listarTecnicosDisponibilidad();
+    }
+
+    public void asignarTecnicoIncidencia(AsignarTecnicoIncidenciaRequestDto asignarTecnicoIncidenciaRequestDto) {
+        incidenciasDao.asignarTecnicoIncidencia(asignarTecnicoIncidenciaRequestDto);
     }
 }
